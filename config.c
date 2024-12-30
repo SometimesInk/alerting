@@ -4,44 +4,78 @@
 #include <stdlib.h>
 #include <string.h>
 
-int interpolation_degree = 1;
-char *segment_header;
-char *segment_repeated;
-char *segment_footer;
+int config_interpolation_degree = 1;
+int config_start_r = 111;
+int config_start_g = 201;
+int config_start_b = 141;
+int config_end_r = 181;
+int config_end_g = 4;
+int config_end_b = 10;
 
-int parse_kvp(char *key, int value) {
+char *segment_header = NULL;
+size_t segment_header_length = 0;
+char *segment_repeated = NULL;
+size_t segment_repeated_length = 0;
+char *segment_footer = NULL;
+size_t segment_footer_length = 0;
+
+int parse_section(char **section, size_t *length, char *line) {
+  size_t line_length = strlen(line);
+
+  // Remove marker
+  line += 2;
+  line_length -= 2;
+
+  // Reallocate memory to accommodate the new line
+  *section = realloc(*section, *length + line_length +
+                                   2); // +2 for newline and null terminator
+  if (*section == NULL) {
+    return ERROR_NULL_POINTER;
+  }
+
+  // Append the line and a newline to the section
+  memcpy(*section + *length, line, line_length);
+  (*section)[*length + line_length] = '\n';     // Add newline character
+  (*section)[*length + line_length + 1] = '\0'; // Null-terminate the string
+  *length += line_length + 1;                   // Update the length
+
+  return EXIT_SUCCESS;
+}
+
+int parse_kvp(char *line, char *key, int value) {
   // Check for NULL
   if (key == NULL) {
     return -ERROR_NULL_POINTER;
   }
 
   // Assign variable to its correct value
-  if (strcmp(key, "interpolation_degree") == 0) {
-    interpolation_degree = value;
+  if (strcmp(key, "config_interpolation_degree") == 0) {
+    config_interpolation_degree = value;
     return EXIT_SUCCESS;
   }
-
-  // Check if line is a segment
-  if (key[0] == '%' && strlen(key) > 1) {
-    memmove(key, key + 2, strlen(key));
-    if (key[1] == 'h') {
-      // Reallocate memory for the old segment_header, the new line to append, a
-      // new line and a null terminating character
-      segment_header = (char *)realloc(
-          segment_header,
-          sizeof(char) * (strlen(segment_header) + strlen(key) + 2));
-
-      // Move line at the end of segment_header
-      memmove(segment_header + strlen(segment_header), key, strlen(key));
-
-      // Add new line and ensure null termination
-      segment_header[strlen(segment_header) - 2] = '\n';
-      segment_header[strlen(segment_header) - 1] = '\0';
-    } else if (key[1] == 'r') {
-      // Parse repeated segment
-    } else if (key[1] == 'f') {
-      // Parse footer
-    }
+  if (strcmp(key, "config_start_r") == 0) {
+    config_start_r = value;
+    return EXIT_SUCCESS;
+  }
+  if (strcmp(key, "config_start_g") == 0) {
+    config_start_g = value;
+    return EXIT_SUCCESS;
+  }
+  if (strcmp(key, "config_start_b") == 0) {
+    config_start_b = value;
+    return EXIT_SUCCESS;
+  }
+  if (strcmp(key, "config_end_r") == 0) {
+    config_end_r = value;
+    return EXIT_SUCCESS;
+  }
+  if (strcmp(key, "config_end_g") == 0) {
+    config_end_g = value;
+    return EXIT_SUCCESS;
+  }
+  if (strcmp(key, "config_end_b") == 0) {
+    config_end_b = value;
+    return EXIT_SUCCESS;
   }
 
   return 0;

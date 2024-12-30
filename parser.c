@@ -11,6 +11,9 @@ int parse_line(char *line) {
   char *key;
   int value;
 
+  // Remove newline
+  line[strcspn(line, "\n")] = 0;
+
   // Assign KVp
   char *token = strtok(line, "=");
   while (token != NULL) {
@@ -24,7 +27,16 @@ int parse_line(char *line) {
     token = strtok(NULL, "");
   }
 
-  return parse_kvp(key, value);
+  if (parse_kvp(line, key, value) == 0) {
+    // Check if line is a segment
+    if (strncmp(line, "%h", 2) == 0)
+      return parse_section(&segment_header, &segment_header_length, line);
+    if (strncmp(line, "%r", 2) == 0)
+      return parse_section(&segment_repeated, &segment_repeated_length, line);
+    if (strncmp(line, "%f", 2) == 0)
+      return parse_section(&segment_footer, &segment_footer_length, line);
+  }
+  return 0;
 }
 
 int parse_config() {
