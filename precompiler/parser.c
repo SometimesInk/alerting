@@ -46,6 +46,7 @@ int parse_config() {
   ssize_t read;
 
   file = fopen("alerting.ini", "r");
+
   // Check if memory allocation was successful
   if (file == NULL)
     return -ERROR_ALLOCATION_FAILURE;

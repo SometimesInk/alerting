@@ -11,6 +11,7 @@ int config_start_b = 141;
 int config_end_r = 181;
 int config_end_g = 4;
 int config_end_b = 10;
+int config_offset = 1;
 
 char *segment_header = NULL;
 size_t segment_header_length = 0;
@@ -52,29 +53,26 @@ int parse_kvp(char *line, char *key, int value) {
   if (strcmp(key, "config_interpolation_degree") == 0) {
     config_interpolation_degree = value;
     return EXIT_SUCCESS;
-  }
-  if (strcmp(key, "config_start_r") == 0) {
+  } else if (strcmp(key, "config_start_r") == 0) {
     config_start_r = value;
     return EXIT_SUCCESS;
-  }
-  if (strcmp(key, "config_start_g") == 0) {
+  } else if (strcmp(key, "config_start_g") == 0) {
     config_start_g = value;
     return EXIT_SUCCESS;
-  }
-  if (strcmp(key, "config_start_b") == 0) {
+  } else if (strcmp(key, "config_start_b") == 0) {
     config_start_b = value;
     return EXIT_SUCCESS;
-  }
-  if (strcmp(key, "config_end_r") == 0) {
+  } else if (strcmp(key, "config_end_r") == 0) {
     config_end_r = value;
     return EXIT_SUCCESS;
-  }
-  if (strcmp(key, "config_end_g") == 0) {
+  } else if (strcmp(key, "config_end_g") == 0) {
     config_end_g = value;
     return EXIT_SUCCESS;
-  }
-  if (strcmp(key, "config_end_b") == 0) {
+  } else if (strcmp(key, "config_end_b") == 0) {
     config_end_b = value;
+    return EXIT_SUCCESS;
+  } else if (strcmp(key, "config_offset") == 0) {
+    config_offset = value;
     return EXIT_SUCCESS;
   }
 

@@ -12,6 +12,7 @@ extern int config_start_b;
 extern int config_end_r;
 extern int config_end_g;
 extern int config_end_b;
+extern int config_offset;
 
 extern char *segment_header;
 extern size_t segment_header_length;

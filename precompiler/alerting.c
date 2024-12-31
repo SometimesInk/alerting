@@ -6,7 +6,6 @@
 
 int main(void) {
   parse_config();
-  printf("Finished to parse config");
   compile_write();
 
   // Free segments

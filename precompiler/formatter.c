@@ -3,16 +3,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-void format(char **string, char *key, char *value) {
+char *format(char *string, char *key, char *value) {
   // Find the length of the string, key, and value
-  int string_length = strlen(*string);
+  int string_length = strlen(string);
   int key_length = strlen(key);
   int value_length = strlen(value);
 
   // Check if the key exists in the string
-  char *found = strstr(*string, key);
+  char *found = strstr(string, key);
   if (found == NULL) {
-    return; // If key is not found, return without changes
+    // Return a copy of the original string if key is not found
+    char *result = malloc((string_length + 1) * sizeof(char));
+    if (result) {
+      strcpy(result, string);
+    }
+    return result;
   }
 
   // Calculate the new null-terminated size
@@ -22,13 +27,13 @@ void format(char **string, char *key, char *value) {
   char *result = (char *)malloc(new_size * sizeof(char));
   if (result == NULL) {
     // Handle memory allocation failure
-    return;
+    return NULL;
   }
 
   // Copy the part of the string before the key
   int index = 0;
-  while (*string + index != found) {
-    result[index] = (*string)[index];
+  while (string + index != found) {
+    result[index] = string[index];
     index++;
   }
 
@@ -38,17 +43,15 @@ void format(char **string, char *key, char *value) {
   }
 
   // Copy the remaining part of the string after the key
-  int remainingIndex = (found - *string) + key_length;
+  int remainingIndex = (found - string) + key_length;
   while (remainingIndex < string_length) {
-    result[index++] = (*string)[remainingIndex++];
+    result[index++] = string[remainingIndex++];
   }
 
   // Null-terminate the result string
   result[index] = '\0';
 
-  // Update the original string pointer
-  free(*string); // Free the original string
-  *string = result;
+  return result; // Return the newly formatted string
 }
 
 void integer_as_string(char **output, int number, int hex) {
@@ -80,9 +83,8 @@ void integer_as_string(char **output, int number, int hex) {
 void ensure_two_digits(char **hex) {
   // Ensure not NULL and null terminated
   if (hex && strlen(*hex) == 1) {
-    // Shift the string by 1 to leave space for the leading 0
     size_t len = strlen(*hex);
-    memmove(hex + 1, *hex, len + 1);
-    *hex[0] = '0';
+    memmove(*hex + 1, *hex, len + 1); // Shift string by 1 byte to make room
+    (*hex)[0] = '0';                  // Corrected this line
   }
 }
