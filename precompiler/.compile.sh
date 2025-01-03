@@ -37,7 +37,6 @@ for flag in "$@"; do
   *)
     echo "Error: Unknown flag '$flag'."
     exit
-    shift
     ;;
   esac
 done

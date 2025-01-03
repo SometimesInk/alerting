@@ -1,0 +1,10 @@
+[Unit]
+Description=Run alerting script
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=1min
+Unit=alerting.service
+
+[Install]
+WantedBy=timers.target

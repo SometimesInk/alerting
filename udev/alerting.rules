@@ -1,0 +1,1 @@
+SUBSYSTEM=="power_supply", ACTION=="change", ATTR{status}=="Discharging", RUN+="/home/ink/Documents/GitHub/alerting/reference.sh"

@@ -17,8 +17,7 @@ int compile_calculate(int a, int b, int n, int t) {
   }
   command[0] = '\0';
   // Format command
-  snprintf(command, 128, "./interpolation_nth_degree.sh %i %i %i %i", a, b, n,
-           t);
+  snprintf(command, 128, "./%s %i %i %i %i", path_function_script, a, b, n, t);
 
   // Open a pipe to execute the command and capture its output
   file = popen(command, "r");
@@ -37,7 +36,6 @@ int compile_calculate(int a, int b, int n, int t) {
   } else {
     perror("fgets");
   }
-
   // Close the pipe
   fclose(file);
   return output;
@@ -47,8 +45,8 @@ void compile_write(void) {
   FILE *file;
 
   // Open a file in writing mode
-  remove("precompiled_values.sh");
-  file = fopen("precompiled_values.sh", "w");
+  remove(path_output_script);
+  file = fopen(path_output_script, "w");
   if (file == NULL)
     return;
 
@@ -68,11 +66,11 @@ void compile_write(void) {
     integer_as_string(&index_as_string, abs(100 + config_offset - i), 0);
 
     int r = compile_calculate(config_start_r, config_end_r,
-                              config_interpolation_degree, i);
+                              config_extra_argument, i);
     int g = compile_calculate(config_start_g, config_end_g,
-                              config_interpolation_degree, i);
+                              config_extra_argument, i);
     int b = compile_calculate(config_start_b, config_end_b,
-                              config_interpolation_degree, i);
+                              config_extra_argument, i);
     char *r_string;
     char *g_string;
     char *b_string;

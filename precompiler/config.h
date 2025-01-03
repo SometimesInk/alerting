@@ -5,7 +5,7 @@
 
 /// Config variables
 ///
-extern int config_interpolation_degree;
+extern int config_extra_argument;
 extern int config_start_r;
 extern int config_start_g;
 extern int config_start_b;
@@ -13,6 +13,11 @@ extern int config_end_r;
 extern int config_end_g;
 extern int config_end_b;
 extern int config_offset;
+
+extern char *path_output_script;
+extern size_t path_output_script_length;
+extern char *path_function_script;
+extern size_t path_function_script_length;
 
 extern char *segment_header;
 extern size_t segment_header_length;

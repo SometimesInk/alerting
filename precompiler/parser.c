@@ -28,6 +28,12 @@ int parse_line(char *line) {
   }
 
   if (parse_kvp(line, key, value) == 0) {
+    // Check if line is a path
+    if (strncmp(line, "%p", 2) == 0)
+      return parse_section(&path_output_script, &path_output_script_length, line);
+    if (strncmp(line, "%P", 2) == 0)
+      return parse_section(&path_function_script, &path_function_script_length, line);
+
     // Check if line is a segment
     if (strncmp(line, "%h", 2) == 0)
       return parse_section(&segment_header, &segment_header_length, line);

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int config_interpolation_degree = 1;
+int config_extra_argument = 5;
 int config_start_r = 111;
 int config_start_g = 201;
 int config_start_b = 141;
@@ -12,6 +12,11 @@ int config_end_r = 181;
 int config_end_g = 4;
 int config_end_b = 10;
 int config_offset = 1;
+
+char *path_output_script = NULL;
+size_t path_output_script_length = 0;
+char *path_function_script = NULL;
+size_t path_function_script_length = 0;
 
 char *segment_header = NULL;
 size_t segment_header_length = 0;
@@ -50,8 +55,8 @@ int parse_kvp(char *line, char *key, int value) {
   }
 
   // Assign variable to its correct value
-  if (strcmp(key, "config_interpolation_degree") == 0) {
-    config_interpolation_degree = value;
+  if (strcmp(key, "config_extra_argument") == 0) {
+    config_extra_argument = value;
     return EXIT_SUCCESS;
   } else if (strcmp(key, "config_start_r") == 0) {
     config_start_r = value;
