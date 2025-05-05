@@ -45,7 +45,7 @@ int parse_line(char *line) {
   return 0;
 }
 
-int parse_config() {
+int parse_config(void) {
   FILE *file;
   char *line = NULL;
   size_t length = 0;
